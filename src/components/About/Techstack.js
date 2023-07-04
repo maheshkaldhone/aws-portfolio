@@ -1,62 +1,63 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import { CgCPlusPlus } from "react-icons/cg";
 import {
-  DiJavascript1,
-  DiReact,
-  DiNodejs,
+  DiJenkins,
   DiMongodb,
   DiPython,
   DiGit,
   DiJava,
 } from "react-icons/di";
-import {
-  SiRedis,
-  SiFirebase,
-  SiNextdotjs,
-  SiSolidity,
-  SiPostgresql,
+import {  
+  SiAnsible,
+  SiMysql,
+  SiTerraform,
+  SiGrafana,
+  SiKubernetes,
+  SiApache,
 } from "react-icons/si";
-import { TbBrandGolang } from "react-icons/tb";
+
+import { FaAws,FaDocker,FaLinux,FaGithub,FaDatabase,} from 'react-icons/fa';
+
+
 
 function Techstack() {
   return (
     <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
       <Col xs={4} md={2} className="tech-icons">
-        <CgCPlusPlus />
+        <FaAws/>
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <DiJavascript1 />
+        <FaDocker/>
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <TbBrandGolang />
+        <FaLinux />
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <DiNodejs />
+        <SiTerraform />
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <DiReact />
+        <SiKubernetes/>  
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <SiSolidity />
+        <DiJenkins />
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <DiMongodb />
+        <FaDatabase />
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <SiNextdotjs />
+        <SiMysql />
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <DiGit />
+        <SiGrafana />
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <SiFirebase />
+        <SiAnsible />
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <SiRedis />
+        <FaGithub />
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <SiPostgresql />
+        <SiApache />
       </Col>
       <Col xs={4} md={2} className="tech-icons">
         <DiPython />
