@@ -1,65 +1,37 @@
-name: Deploy to EC2
+name: Node.js CI
 
 on:
   push:
-    branches:
-      - main 
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  build_and_deploy:
+  build:
+
     runs-on: ubuntu-latest
-    
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+        
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
       with:
-        node-version: 14
-
-    - name: Cache Dependencies
-      uses: actions/cache@v2
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.2
       with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+       name: updated_build_${{ steps.generate_artifact_name.outputs.artifact_name }}
+       path: build
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v2.1.1
+      with:
+        name: updated_build_artifacts
+        path: .
 
-    - name: Install Dependencies
-      run: npm ci
-
-    - name: Build React App
-      run: npm run build
-
-    - name: Run Tests
-      run: npm test
-
-    - name: Start Web App
-      run: npm start &
-    
-    - name: Wait for App to Start
-      run: sleep 10
-
-    - name: Set up SSH key
-      run: |
-        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan ${{ secrets.EC2_IP_ADDRESS }} >> ~/.ssh/known_hosts
-
-    - name: Deploy to EC2
-      run: |
-        scp -r -i ~/.ssh/id_rsa build/* ubuntu@${{ secrets.EC2_IP_ADDRESS }}:${{ secrets.TOMCAT_WEBAPPS_PATH }}
-
-    - name: Restart Node.js App
-      run: |
-        ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_IP_ADDRESS }} "sudo systemctl restart your-nodejs-app-service"
-
-    - name: Restart Apache2
-      run: |
-        ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_IP_ADDRESS }} "sudo service apache2 restart"
-
-    - name: Restart Tomcat
-      run: |
-        ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_IP_ADDRESS }} "sudo service tomcat restart"
 
