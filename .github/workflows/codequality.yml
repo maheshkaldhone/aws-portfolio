@@ -1,0 +1,6 @@
+name: code quality scan
+
+on: 
+  push: 
+  
+   
