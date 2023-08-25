@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - npm ci       # Use npm ci for faster, deterministic dependency installation
+
+  build:
+    commands:
+      - npm test     # Run tests using npm test (assumes tests are defined in package.json)
+
+artifacts:
+  files:
+    - '**/*'        
+
