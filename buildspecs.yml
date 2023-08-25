@@ -2,24 +2,25 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      nodejs: 16  
     commands:
-      - echo Installing source NPM dependencies...
       - npm install
-      - echo Installing Mocha...
-      - npm install -g mocha
   pre_build:
     commands:
-      - echo Running linter
-      - npm run lint
+      - echo Installing source NPM dependencies...
   build:
     commands:
       - echo Build started on `date`
-      - echo Compiling the Node.js code
-      - echo Running unit tests
-      - npm test
+      - npm run heroku-postbuild
+      - npm prune --production
   post_build:
     commands:
       - echo Build completed on `date`
 artifacts:
+  type: zip
   files:
     - '**/*'
+cache:
+  paths:
+    - node_modules
