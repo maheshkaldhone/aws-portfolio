@@ -26,6 +26,6 @@ artifacts:
     - Images/**/*
     - public/**/*
     - src/**/*
-    - appspecs.yml
+    - appspec.yml
     - scripts/**/*
 
