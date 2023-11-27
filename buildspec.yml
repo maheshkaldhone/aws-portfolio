@@ -4,19 +4,16 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 20
+      nodejs: 18
+   
     commands:
-
-  pre_build:
-    commands:
-      - echo Installing source NPM dependencies...
-      - npm install
-
+        # install npm
+        - npm install
+       
   build:
     commands:
-      - echo Build started on `date`
-      - echo Compiling the Node.js code
-      - mocha test.js
+        # run build script
+        - npm run-script build
   post_build:
     commands:
       - echo Build completed on `date`
@@ -31,3 +28,4 @@ artifacts:
     - src/**/*
     - appspecs.yml
     - scripts/**/*
+
