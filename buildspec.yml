@@ -29,4 +29,6 @@ artifacts:
     - appspec.yml
     - scripts/**/*
     - build/**/*
+    - package.json
+    - package-lock.json
 
