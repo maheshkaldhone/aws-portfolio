@@ -28,5 +28,5 @@ artifacts:
     - src/**/*
     - appspec.yml
     - scripts/**/*
-    - build
+    - build/**/*
 
