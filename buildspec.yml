@@ -8,12 +8,12 @@ phases:
    
     commands:
         # install npm
-        - npm install
+       # - npm install
        
   build:
     commands:
         # run build script
-        - npm run build
+       # - npm run build
         -  echo '#!/bin/bash' > fetch_params.sh
         -  echo 'aws ssm get-parameters-by-path --path "/test/" --recursive --with-decryption --output text --query "Parameters[*].{Name:Name,Value:Value}" | \
         -  awk -F'\t' '{sub("/test/", "", $1); print $1 "=" $2}' > Environment_variables.txt' >> fetch_params.sh
