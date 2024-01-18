@@ -15,8 +15,8 @@ phases:
         # run build script
        # - npm run build
          - echo '#!/bin/bash' > fetch_params.sh
-         - echo 'aws ssm get-parameters-by-path --path "/test/" --recursive --with-decryption --output text --query "Parameters[*].{Name:Name,Value:Value}" | \' >> fetch_params.sh
-         - echo 'awk -F'\t' '\''{sub("/test/", "", $1); print $1 "=" $2}'\'' > Environment_variables.txt' >> fetch_params.sh
+         - echo 'aws ssm get-parameters-by-path --path "/test/" --recursive --with-decryption --output text --query "Parameters[*].{Name:Name,Value:Value}" | \
+                 awk -F'\t' '\''{sub("/test/", "", $1); print $1 "=" $2}'\'' > Environment_variables.txt' >> fetch_params.sh
          - chmod +x fetch_params.sh
          - ./fetch_params.sh
 
