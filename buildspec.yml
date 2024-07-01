@@ -1,9 +1,5 @@
 version: 0.2
 
-env:
-  variables:
-    ARTIFACT_NAME: "artifact-$(date +%Y-%m-%d-%H-%M-%S)" # Dynamic name with date and time
-
 phases:
   install:
     runtime-versions:
@@ -15,7 +11,7 @@ phases:
     commands:
       - echo Installing source NPM dependencies.
       - npm install     
-           
+
   build:
     commands:
       - echo Build started on `date`
@@ -30,6 +26,9 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
+      - TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)
+      - VERSION="FE-${TIMESTAMP}"
+      - echo "${VERSION}" > .version  
 
 artifacts:
   files:
@@ -40,5 +39,6 @@ artifacts:
     - appspec.yml
     - package-lock.json
     - package.json
-    - .env
-  name: "${ARTIFACT_NAME}" 
+    - .env    
+    - .version 
+  name: FE-$(date +%Y-%m-%d-%H-%M-%S)  
