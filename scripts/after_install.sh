@@ -1,5 +1,5 @@
 # navigate to app folder
-cd /app/aws-portfolio
+cd /app/FE
 
 # install 
 npm install
