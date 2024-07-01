@@ -2,7 +2,7 @@
 cd /app/FE
 
 # install 
-npm install
+/root/.nvm/versions/node/v18.20.3/bin/npm install
 
 # install create-react-app and react-scripts
 # without react-scripts application cannot be started
