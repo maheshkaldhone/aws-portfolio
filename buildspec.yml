@@ -1,44 +1,44 @@
-# Do not change version. This is the version of aws buildspec, not the version of your buldspec file.
 version: 0.2
+
+env:
+  variables:
+    ARTIFACT_NAME: "artifact-$(date +%Y-%m-%d-%H-%M-%S)" # Dynamic name with date and time
 
 phases:
   install:
     runtime-versions:
       nodejs: 18
-   
     commands:
-        # install npm
-       # - npm install
-       
+      - echo Installing
+
+  pre_build:
+    commands:
+      - echo Installing source NPM dependencies.
+      - npm install     
+           
   build:
     commands:
-        # run build script
-       # - npm run build
-         -  echo '#!/bin/bash' > fetch_params.sh
-         -  echo 'aws ssm get-parameters-by-path --path "/test/" --recursive --with-decryption --output text --query "Parameters[*].{Name:Name,Value:Value}" > tmp_env.txt' >> fetch_params.sh
-         -  echo 'awk -F"\t" '\''{sub("/test/", "", $1); print $1 "=" $2}'\'' tmp_env.txt > Environment_variables.txt' >> fetch_params.sh
-         -  chmod +x fetch_params.sh
-         - ./fetch_params.sh
+      - echo Build started on `date`
+      - echo Compiling the Node.js code
+      - echo '#!/bin/bash' > fetch_params.sh
+      - echo 'aws ssm get-parameters-by-path --path "/test/" --recursive --with-decryption --output text --query "Parameters[*].{Name:Name,Value:Value}" > tmp_env.txt' >> fetch_params.sh
+      - echo 'awk -F"\t" '\''{sub("/test/", "", $1); print $1 "=" $2}'\'' tmp_env.txt > .env' >> fetch_params.sh
+      - chmod +x fetch_params.sh
+      - ./fetch_params.sh
+      - npm run build
 
-
-       
-      
   post_build:
     commands:
       - echo Build completed on `date`
-# Include only the files required for your application to run.
-# Do not use recursively include artifacts from node_modules directory as it will include unnecessary packages 
-# used only for building and testing.
-# ExpressJS apps will need other artifact directories included (bin/*, public/*, routes/*, views/* etc).
+
 artifacts:
   files:
     - Images/**/*
     - public/**/*
+    - scripts/**/*
     - src/**/*
     - appspec.yml
-    - scripts/**/*
-    - build/**/*
-    - package.json
     - package-lock.json
-    - Environment_variables.txt
-
+    - package.json
+    - .env
+  name: "${ARTIFACT_NAME}" 
