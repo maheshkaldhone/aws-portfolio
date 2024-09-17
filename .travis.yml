@@ -48,7 +48,6 @@
 #   skip_cleanup: true  # To avoid removing the zip file
 #   artifact: $ZIP_NAME
 
-
 language: node_js
 node_js:
   - '16'
@@ -64,15 +63,4 @@ script:
   - npm run build # Ensure you have a build script defined in your package.json
 
 after_success:
-  - zip -r build_artifact.zip . # Create a zip file with all the source code, build artifacts, and node_modules
-
-deploy:
-  provider: s3
-  access_key_id: $AWS_ACCESS_KEY_ID
-  secret_access_key: $AWS_SECRET_ACCESS_KEY
-  bucket: "travisdemobuilds"
-  region: "us-east-2"
-  local_dir: build_artifact.zip
-  skip_cleanup: true
-  on:
-    branch: main # Adjust the branch name as needed
+  - echo "Build successful"
