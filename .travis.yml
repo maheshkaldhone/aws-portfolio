@@ -11,7 +11,8 @@ install:
 
 script:
   - npm run build
-  - ls -al build/ # List build folder contents for verification
+  - ls -la ../build
+  - ls -al build/
 
 before_deploy:
   - pip install --user awscli # Install AWS CLI using pip
