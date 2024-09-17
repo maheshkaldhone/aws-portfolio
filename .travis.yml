@@ -13,13 +13,14 @@ script:
   - npm run build
   - ls -la 
   - ls -al build/
-
+  - zip -r build_artifact.zip .
 before_deploy:
   - pip install --user awscli # Install AWS CLI using pip
+  
 
 deploy:
   provider: script
-  script: aws s3 cp --recursive build/ s3://travisdemobuilds
+  script: aws s3 cp --recursive build_artifact.zip s3://travisdemobuilds
   skip_cleanup: true
   on:
     branch: main
