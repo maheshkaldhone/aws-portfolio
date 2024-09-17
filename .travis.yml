@@ -1,56 +1,6 @@
-# language: node_js
-# node_js:
-#   - "16"
-
-# cache:
-#   directories:
-#     - node_modules
-
-# install:
-#   - npm install
-
-# script:
-#   - npm run build 
-
-# before_deploy:
-#   # Set the timestamp and zip file name
-#   - export TIMESTAMP=$(date +%Y%m%d%H%M%S)
-#   - export ZIP_NAME=build-artifact-$TIMESTAMP.zip
-
-#   # Zip all relevant directories and files
-#   - echo "Zipping all source code, build artifacts, and modules for S3 deployment."
-#   - zip -r $ZIP_NAME . -x "*.git/*" -x ".travis.yml" -x "buildspec.yml" -x "appspec.yml" -x "*.zip"
-#   - echo "Build artifact prepared as $ZIP_NAME."
-
-# deploy:
-#   provider: s3
-#   access_key_id: $AWS_ACCESS_KEY_ID
-#   secret_access_key: $AWS_SECRET_ACCESS_KEY
-#   bucket: "travisdemobuilds"
-#   region: "us-east-2"
-#   local_dir: .   # This will include all files in the current directory, including the ZIP file.
-#   acl: private
-#   on:
-#     branch: main
-
-# # Explicitly specify files to upload if needed
-# deploy:
-#   provider: s3
-#   access_key_id: $AWS_ACCESS_KEY_ID
-#   secret_access_key: $AWS_SECRET_ACCESS_KEY
-#   bucket: "travisdemobuilds"
-#   region: "us-east-2"
-#   local_dir: . 
-#   acl: private
-#   on:
-#     branch: main
-#   # Specify the file to upload
-#   skip_cleanup: true  # To avoid removing the zip file
-#   artifact: $ZIP_NAME
-
 language: node_js
 node_js:
-  - '16'
+  - '18'
 
 cache:
   directories:
@@ -60,9 +10,15 @@ install:
   - npm install
 
 script:
-  - npm run build # Ensure you have a build script defined in your package.json
-  - ls -al build/
+  - npm run build
+  - ls -al build/ # List build folder contents for verification
 
-after_success:
-  - echo "Build successful"
-  - aws s3 cp --recursive build/ s3://travisdemobuilds
+before_deploy:
+  - pip install --user awscli # Install AWS CLI using pip
+
+deploy:
+  provider: script
+  script: aws s3 cp --recursive build/ s3://travisdemobuilds
+  skip_cleanup: true
+  on:
+    branch: main
