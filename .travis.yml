@@ -1,0 +1,30 @@
+language: node_js
+node_js:
+  - "18"
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - npm install
+
+script:
+  - npm run build 
+
+before_deploy:
+  - echo "Zipping build directory for S3 deployment."
+  - zip -r build-artifact.zip build  
+  - echo "Build artifact prepared."
+
+deploy:
+  provider: s3
+  access_key_id: $AWS_ACCESS_KEY_ID   
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
+  bucket: "devtestbucket1-spryiq "      
+  region: "us-east-2"           
+  skip_cleanup: true                  # Ensures the build directory isn't deleted
+  local_dir: build                    # The directory that contains the build artifacts
+  acl: private                        # Ensures that files are not publicly accessible
+  on:
+    branch: main                      # Deploy only on the main branch
