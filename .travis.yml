@@ -13,7 +13,7 @@ script:
   - npm run build
   - ls -la 
   - ls -al build/
-  - zip -r build_artifact.zip .
+  - zip -r -q build_artifact.zip .
 before_deploy:
   - pip install --user awscli # Install AWS CLI using pip
   
