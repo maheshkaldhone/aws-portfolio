@@ -15,12 +15,15 @@ script:
   - ls -la 
   - ls -al build/
   - zip -r -q build_artifact.zip .
+  - pwd
+  - ls -al
+
 before_deploy:
-  - pip install --user awscli # Install AWS CLI using pip
+  - pip install --user awscli 
   
 deploy:
   provider: script
-  script: aws s3 cp --recursive build_artifact.zip s3://travisdemobuilds
+  script: aws s3 cp /home/travis/build/maheshkaldhone/aws-portfolio/build_artifact.zip s3://travisdemobuilds
   skip_cleanup: true
   on:
     branch: main
