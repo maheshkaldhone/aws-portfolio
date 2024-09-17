@@ -61,6 +61,8 @@ install:
 
 script:
   - npm run build # Ensure you have a build script defined in your package.json
+  - ls -al build/
 
 after_success:
   - echo "Build successful"
+  - aws s3 cp --recursive build/ s3://travisdemobuilds
