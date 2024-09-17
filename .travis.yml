@@ -21,7 +21,7 @@ deploy:
   provider: s3
   access_key_id: $AWS_ACCESS_KEY_ID   
   secret_access_key: $AWS_SECRET_ACCESS_KEY
-  bucket: "devtestbucket1-spryiq"      
+  bucket: "travisdemobuilds"      
   region: "us-east-2"           
   skip_cleanup: true                  # Ensures the build directory isn't deleted
   local_dir: build                    # The directory that contains the build artifacts
