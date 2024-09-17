@@ -11,19 +11,23 @@ install:
 
 script:
   - npm run build
-  - pwd
-  - ls -la 
-  - ls -al build/
   - zip -r -q build_artifact.zip .
-  - pwd
-  - ls -al
 
 before_deploy:
   - pip install --user awscli 
-  
+
 deploy:
   provider: script
-  script: aws s3 cp /home/travis/build/maheshkaldhone/aws-portfolio/build_artifact.zip s3://travisdemobuilds
+  script: |
+    aws s3 cp build_artifact.zip s3://travisdemobuilds/ # Upload the ZIP file to S3
+    # Now deploy the ZIP from S3 to Elastic Beanstalk
+    aws elasticbeanstalk create-application-version \
+      --application-name travis1 \
+      --version-label v1.0 \
+      --source-bundle S3Bucket="travisdemobuilds",S3Key="build_artifact.zip"
+    aws elasticbeanstalk update-environment \
+      --environment-name Travis1-env \
+      --version-label v1.0
   skip_cleanup: true
   on:
     branch: main
